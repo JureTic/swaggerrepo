@@ -70,6 +70,21 @@ func authenticate(c *fiber.Ctx) (r bool) {
 	return true
 }
 
+// @title Fiber Swagger Example API
+// @version 2.0
+// @description This is a sample server server.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:3000
+// @BasePath /
+// @schemes http
 func main() {
 	var dsn string
 	dsn = "postgres://zlqwvdmx:x0tl7AVnX4zi0rsqeKcf8R2dhjvqOpib@ella.db.elephantsql.com/zlqwvdmx"
@@ -170,7 +185,14 @@ func main() {
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.JSON([]byte("Posts container working"))
 	})
-
+	// HealthCheck godoc
+	// @Summary Show the status of server.
+	// @Description get the status of server.
+	// @Tags root
+	// @Accept */*
+	// @Produce json
+	// @Success 200 {object} map[string]interface{}
+	// @Router / [get]
 	app.Get("/healthL", func(c *fiber.Ctx) error {
 		return c.SendStatus(200)
 	})
