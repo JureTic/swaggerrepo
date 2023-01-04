@@ -3,10 +3,9 @@ module github.com/JureTic/swaggerrepo/posts
 go 1.19
 
 require (
-	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
+	github.com/arsmn/fiber-swagger/v2 v2.31.1
 	github.com/gofiber/fiber/v2 v2.41.0
 	github.com/gofiber/jwt/v3 v3.3.4
-	github.com/gofiber/swagger v0.1.8
 	github.com/swaggo/swag v1.8.9
 	gorm.io/driver/postgres v1.4.5
 	gorm.io/gorm v1.24.2

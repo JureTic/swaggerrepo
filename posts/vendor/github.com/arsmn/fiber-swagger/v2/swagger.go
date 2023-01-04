@@ -14,22 +14,13 @@ import (
 	"github.com/swaggo/swag"
 )
 
-const (
-	defaultDocURL = "doc.json"
-	defaultIndex  = "index.html"
-)
-
-var (
-	HandlerDefault = New()
-)
-
 // New returns custom handler
 func New(config ...Config) fiber.Handler {
 	cfg := configDefault(config...)
 
 	index, err := template.New("swagger_index.html").Parse(indexTmpl)
 	if err != nil {
-		panic(fmt.Errorf("fiber: swagger middleware error -> %w", err))
+		panic(fmt.Errorf("Fiber: swagger middleware error -> %w", err))
 	}
 
 	var (
@@ -42,26 +33,26 @@ func New(config ...Config) fiber.Handler {
 		// Set prefix
 		once.Do(func() {
 			prefix = strings.ReplaceAll(c.Route().Path, "*", "")
-
-			forwardedPrefix := getForwardedPrefix(c)
-			if forwardedPrefix != "" {
-				prefix = forwardedPrefix + prefix
-			}
-
 			// Set doc url
 			if len(cfg.URL) == 0 {
 				cfg.URL = path.Join(prefix, defaultDocURL)
 			}
 		})
 
-		p := c.Path(utils.ImmutableString(c.Params("*")))
+		var p string
+		if p = utils.ImmutableString(c.Params("*")); p != "" {
+			c.Path(p)
+		} else {
+			p = strings.TrimPrefix(c.Path(), prefix)
+			p = strings.TrimPrefix(p, "/")
+		}
 
 		switch p {
 		case defaultIndex:
 			c.Type("html")
 			return index.Execute(c, cfg)
 		case defaultDocURL:
-			doc, err := swag.ReadDoc(cfg.InstanceName)
+			doc, err := swag.ReadDoc()
 			if err != nil {
 				return err
 			}
@@ -72,30 +63,4 @@ func New(config ...Config) fiber.Handler {
 			return fs(c)
 		}
 	}
-}
-
-func getForwardedPrefix(c *fiber.Ctx) string {
-	header := c.GetReqHeaders()["X-Forwarded-Prefix"]
-
-	if header == "" {
-		return ""
-	}
-
-	prefix := ""
-
-	prefixes := strings.Split(header, ",")
-	for _, rawPrefix := range prefixes {
-		endIndex := len(rawPrefix)
-		for endIndex > 1 && rawPrefix[endIndex-1] == '/' {
-			endIndex--
-		}
-
-		if endIndex != len(rawPrefix) {
-			prefix += rawPrefix[:endIndex]
-		} else {
-			prefix += rawPrefix
-		}
-	}
-
-	return prefix
 }

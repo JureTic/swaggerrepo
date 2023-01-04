@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	_ "github.com/JureTic/swaggerrepo/posts/docs/fibersimple/"
+	_ "github.com/JureTic/swaggerrepo/posts/docs/fibersimple"
+	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	jwtware "github.com/gofiber/jwt/v3"
-	"github.com/gofiber/swagger"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"math"
@@ -197,7 +197,7 @@ func main() {
 		return c.SendStatus(200)
 	})
 
-	app.Get("/swagger/*", swagger.HandlerDefault) // default
+	app.Get("/swagger/*", swagger.han)
 
 	app.Listen(":8000")
 }

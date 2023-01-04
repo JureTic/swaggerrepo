@@ -4,12 +4,13 @@ import (
 	"html/template"
 )
 
+const (
+	defaultDocURL = "doc.json"
+	defaultIndex  = "index.html"
+)
+
 // Config stores SwaggerUI configuration variables
 type Config struct {
-	// This parameter can be used to name different swagger document instances.
-	// default: ""
-	InstanceName string `json:"-"`
-
 	// Title pointing to title of HTML page.
 	// default: "Swagger UI"
 	Title string `json:"-"`
@@ -97,7 +98,7 @@ type Config struct {
 	OnComplete template.JS `json:"-"`
 
 	// An object with the activate and theme properties.
-	SyntaxHighlight *SyntaxHighlightConfig `json:"-"`
+	SyntaxHighlight *SyntaxHighlightConfig `json:"syntaxHighlight,omitempty"`
 
 	// Controls whether the "Try it out" section should be enabled by default.
 	// default: false
@@ -175,10 +176,6 @@ type Config struct {
 	// In case of OpenAPI 3.0 Bearer scheme, apiKeyValue must contain just the token itself without the Bearer prefix.
 	// default: ""
 	PreauthorizeApiKey template.JS `json:"-"`
-
-	// Applies custom CSS styles.
-	// default: ""
-	CustomStyle template.CSS `json:"-"`
 }
 
 type FilterConfig struct {
@@ -201,13 +198,6 @@ type SyntaxHighlightConfig struct {
 	// Possible values are ["agate", "arta", "monokai", "nord", "obsidian", "tomorrow-night"]
 	// default: "agate"
 	Theme string `json:"theme,omitempty"`
-}
-
-func (shc SyntaxHighlightConfig) Value() interface{} {
-	if shc.Activate {
-		return shc
-	}
-	return false
 }
 
 type OAuthConfig struct {
@@ -250,7 +240,8 @@ type OAuthConfig struct {
 }
 
 var (
-	ConfigDefault = Config{
+	HandlerDefault = New()
+	ConfigDefault  = Config{
 		Title:  "Swagger UI",
 		Layout: "StandaloneLayout",
 		Plugins: []template.JS{
