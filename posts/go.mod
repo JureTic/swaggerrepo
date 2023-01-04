@@ -1,4 +1,4 @@
-module posts
+module github.com/JureTic/swaggerrepo/posts
 
 go 1.19
 

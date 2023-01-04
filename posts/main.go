@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	_ "github.com/JureTic/swaggerrepo/posts/docs/fibersimple/"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	jwtware "github.com/gofiber/jwt/v3"
