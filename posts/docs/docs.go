@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"github.com/alecthomas/template"
 	"github.com/swaggo/swag"
+	_ "github.com/your_repo/docs"
 	"strings"
 )
 
