@@ -197,7 +197,7 @@ func main() {
 		return c.SendStatus(200)
 	})
 
-	app.Get("/swagger/*", swagger.han)
+	app.Get("/swagger/*", swagger.HandlerDefault)
 
 	app.Listen(":8000")
 }
