@@ -1,34 +1,27 @@
-basePath: /
-host: localhost:3000
-info:
-  contact:
-    email: support@swagger.io
-    name: API Support
-    url: http://www.swagger.io/support
-  description: This is a sample server server.
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: http://swagger.io/terms/
-  title: Fiber Swagger Example API
-  version: "2.0"
-paths:
-  /:
-    get:
-      consumes:
-        - '*/*'
-      description: get the status of server.
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: OK
+/login:
+  post:
+    summary: Log in to the server
+    requestBody:
+      required: true
+      content:
+        application/json:
           schema:
-            additionalProperties: true
-            type: object
-      summary: Show the status of server.
-      tags:
-        - root
-schemes:
-  - http
-swagger: "2.0"
+            $ref: '#/components/schemas/LoginRequest'
+    responses:
+      200:
+        description: Successfully logged in
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: JWT for the logged in user
+                user:
+                  $ref: '#/components/schemas/User'
+                  description: User object for the logged in user
+      400:
+        description: Invalid credentials
+      500:
+        description: Internal server error
